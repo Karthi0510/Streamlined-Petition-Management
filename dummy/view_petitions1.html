@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Petitions</title>
+    <style>
+
+
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links li {
+            display: inline;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('/static/emblem.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .petition-card {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .petition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .petition-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .petition-card p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .submitted {
+            color: #3498db;
+        }
+
+        .in-progress {
+            color: #f1c40f;
+        }
+
+        .rejected {
+            color: #e74c3c;
+        }
+
+        .closed {
+            color: #2ecc71;
+        }
+
+        .view-full {
+            display: block;
+            text-align: right;
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .view-full:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">Petition System</div>
+            <ul class="nav-links">
+                <li><a href="/user_home">Home</a></li>
+                <li><a href="/file_petition">File Petition</a></li>
+                <li><a href="/view_petitions">View Petitions</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <h2>Your Filed Petitions</h2>
+        {% if petitions %}
+            {% for petition in petitions %}
+                <div class="petition-card" onclick="window.location.href='/view_full_petition/{{ petition._id }}'">
+                    <h3>{{ petition.subject }}</h3>
+                    <p><strong>Filed On:</strong> {{ petition.timestamp }}</p>
+                    <p><strong>Content:</strong> {{ petition.content[:100] }}...</p>
+                    <p class="status">
+                        <strong>Status:</strong> 
+                        <span class="{{ petition.status|lower|replace(' ', '-') }}">{{ petition.status }}</span>
+                    </p>
+                    <a href="/view_full_petition/{{ petition._id }}" class="view-full">View Full Petition</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No petitions found. You haven't filed any petitions yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Petitions</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('https://images.unsplash.com/photo-1521791136064-7986c2920216') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+
+        .petition-card {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .petition-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .petition-card p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .status {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .submitted {
+            color: #3498db;
+        }
+
+        .in-progress {
+            color: #f1c40f;
+        }
+
+        .rejected {
+            color: #e74c3c;
+        }
+
+        .closed {
+            color: #2ecc71;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Your Filed Petitions</h2>
+        {% if petitions %}
+            {% for petition in petitions %}
+                <div class="petition-card">
+                    <h3>{{ petition.subject }}</h3>
+                    <p><strong>Filed On:</strong> {{ petition.timestamp }}</p>
+                    <p><strong>Content:</strong> {{ petition.content[:100] }}...</p>
+                    <p class="status">
+                        <strong>Status:</strong> 
+                        <span class="{{ petition.status|lower|replace(' ', '-') }}">{{ petition.status }}</span>
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No petitions found. You haven't filed any petitions yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html> -->

@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links li {
+            display: inline;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url('/static/emblem.jpeg') no-repeat center center fixed;
+            /* background: #f4f4f9; */
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            position: relative;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+            text-align: center;
+        }
+        .watermark img {
+            max-width: 600px;
+            width: 50%;
+            height: auto;
+        }
+        .petition-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+        .petition-card:hover {
+            transform: scale(1.02);
+        }
+        .petition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .repetitive {
+            color: red;
+            font-weight: bold;
+        }
+        .petition-card a {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            text-decoration: none;
+            color: inherit;
+        }
+        .view-link {
+            text-align: right;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .view-link:hover {
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">Petition Management System</div>
+            <ul class="nav-links">
+                <li><a href="/admin_dashboard">Petitions</a></li>
+                <li><a href="/admin_dashboard1">Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="watermark">
+            <img src="/static/images/department_logo.png" alt="Department Logo">
+        </div>
+
+        <h2>Petitions for Department: {{ session['department'] }}</h2>
+        {% for petition in petitions %}
+        <div class="petition-card">
+            <a href="{{ url_for('admin_view_petition', petition_id=petition._id) }}"></a>
+            <div class="petition-header">
+                <div>
+                    <p><strong>Subject:</strong> {{ petition.subject }}</p>
+                    <p><strong>Content:</strong> {{ petition.content[:100] }}...</p>
+                    <p><strong>Filed On:</strong> {{ petition.timestamp }}</p>
+                </div>
+                <div class="status">
+                    Status: {{ petition.status }}
+                    {% if petition.repetitive %}
+                    <span class="repetitive">(Repetitive)</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        nav {
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 80%;
+            margin: 0 auto;
+        }
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f1c40f;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links li {
+            display: inline;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #f1c40f;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            position: relative;
+        }
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+            text-align: center;
+        }
+        .watermark img {
+            max-width: 600px;
+            width: 50%;
+            height: auto;
+        }
+        .petition-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+        .petition-card:hover {
+            transform: scale(1.02);
+        }
+        .petition-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .status {
+            font-weight: bold;
+        }
+        .repetitive {
+            color: red;
+            font-weight: bold;
+        }
+        .view-link {
+            display: block;
+            text-align: right;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .view-link:hover {
+            color: #f1c40f;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">Petition Management System</div>
+            <ul class="nav-links">
+                <li><a href="/admin_dashboard">Petitions</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="watermark">
+            <img src="/static/images/department_logo.png" alt="Department Logo">
+        </div>
+
+        <h2>Petitions for Department: {{ session['department'] }}</h2>
+        {% for petition in petitions %}
+        <div class="petition-card">
+            <div class="petition-header">
+                <div>
+                    <p><strong>Subject:</strong> {{ petition.subject }}</p>
+                    <p><strong>Content:</strong> {{ petition.content[:100] }}...</p>
+                    <p><strong>Filed On:</strong> {{ petition.timestamp }}</p>
+                </div>
+                <div class="status">
+                    Status: {{ petition.status }}
+                    {% if petition.repetitive %}
+                    <span class="repetitive">(Repetitive)</span>
+                    {% endif %}
+                </div>
+            </div>
+            <a href="{{ url_for('admin_view_petition', petition_id=petition._id) }}" class="view-link">View Full Petition</a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html> -->
